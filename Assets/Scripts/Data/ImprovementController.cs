@@ -1,18 +1,27 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ImprovementController : MonoBehaviour
 {
     public static Action OnCheckUnblockNextPerk;
     public static Action<ImprovementController> OnCheckUnlockInfoPerk;
 
+    [InlineEditor(InlineEditorModes.FullEditor)]
     public ImprovementsData Data;
     public int ImprovementLevel = 0;
     public Resources Cost;
     public Resources GenerateResources;
 
+    [BoxGroup("SpecialEffect", false)]
+    public UnityEvent SpecialEffect;
+    [BoxGroup("SpecialEffect", false)]
+    public bool JustInLvl1 = false;
+
+    [SerializeField]
     private bool _isUnlocked = false;
     public bool IsUnlocked
     {
@@ -59,6 +68,12 @@ public class ImprovementController : MonoBehaviour
 
 
         if (ImprovementLevel == 1) OnCheckUnblockNextPerk?.Invoke();
+
+        // Just called at lvl 1
+        if (JustInLvl1) SpecialEffect?.Invoke();
+        // Called everytime
+        else SpecialEffect?.Invoke();
+
         //TODO : Call to update info
         //TODO : Update perks
     }

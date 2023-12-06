@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520b92988ad34b34ebef4d471c98f725, type: 3}
   m_Name: Test
   m_EditorClassIdentifier: 
-  Logo: {fileID: 2800000, guid: 02dec3ad4ea93423b8520220b6e313e7, type: 3}
-  IncreaseByLevel: 0
-  PriceValue:
-    LineCodes: 0
+  Logo: {fileID: 2800000, guid: d5a67aafeb80e2740b1fd5833bd546ab, type: 3}
+  GeneratedResources:
+    CodeLines: 0
     Bitcoin: 0
+  PriceValue:
+    CodeLines: 0
+    Bitcoin: 0
+  IncreaseByLevel: 0
+  PercentageToUnlock: 0.1

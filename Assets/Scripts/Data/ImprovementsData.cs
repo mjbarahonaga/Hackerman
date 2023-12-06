@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using System;
 
 [CreateAssetMenu(fileName = "Improvement", menuName = "Hackerman/Create Scriptable Improvement")]
+[Serializable]
 public class ImprovementsData : ScriptableObject
 {
     [BoxGroup("Logo", false)]
