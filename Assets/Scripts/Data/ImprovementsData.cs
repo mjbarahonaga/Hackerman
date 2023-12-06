@@ -10,7 +10,6 @@ public class ImprovementsData : ScriptableObject
     [OnInspectorGUI("DrawLogo", append: true)]
     public Texture2D Logo;
 
-    
     [BoxGroup("Resources", false)]
     public Resources GeneratedResources;
 
