@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     [Range(0f, 1f)]
     public float FractionOfSeconds = 0.1f; // 1f / 10f - 10 times per second
-    private Resources _fractionGeneratedResources;
+    private Resources _fractionGeneratedResources = new Resources(0,0);
 
     private CoroutineHandle _updateCoroutine;
     private Resources _playerResources;
@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
     
     private void Awake()
     {
+        PlayerResources = new Resources(0, 0);
+        _fractionGeneratedResources = new Resources(0, 0);
         if (Instance != null && Instance != this)
         {
             Destroy(this);

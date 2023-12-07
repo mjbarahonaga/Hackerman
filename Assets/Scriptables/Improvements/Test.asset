@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520b92988ad34b34ebef4d471c98f725, type: 3}
   m_Name: Test
   m_EditorClassIdentifier: 
-  Logo: {fileID: 2800000, guid: d5a67aafeb80e2740b1fd5833bd546ab, type: 3}
+  Logo: {fileID: 2800000, guid: 08d2cb460ff41b24e89e442b07e3d11d, type: 3}
   GeneratedResources:
     CodeLines: 0
     Bitcoin: 0
