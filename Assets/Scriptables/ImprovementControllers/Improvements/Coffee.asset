@@ -10,19 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 520b92988ad34b34ebef4d471c98f725, type: 3}
-  m_Name: Test 1
+  m_Name: Coffee
   m_EditorClassIdentifier: 
-  Name: Test
-  Logo: {fileID: 2800000, guid: 40ca24b9c23bcb24fa942f88c22f8eb6, type: 3}
+  Name: 
+  Logo: {fileID: 2800000, guid: bf763e8a7a52e174ab30de6b82955299, type: 3}
   Sprite: {fileID: 0}
+  IsGeneratePerClick: 1
   GeneratedResources:
-    CodeLines: 1
+    CodeLines: 0
     Bitcoin: 0
-  InfoPerk: Pruebas jeje
+  GeneratedResourcesPerClick:
+    CodeLines: 2
+    Bitcoin: 0
+  IncreasePerClickByLevel: 1
+  InfoPerk: Every time it increases, it doubles the earnings per click
   PriceValue:
-    CodeLines: 10
+    CodeLines: 700
     Bitcoin: 0
-  IncreaseByLevel: 0.1
+  IncreaseByLevel: 0.8
   PercentageToUnlock: 0.1
   SpecialEffect:
     m_PersistentCalls:

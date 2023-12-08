@@ -71,6 +71,19 @@ public class ImprovementsManager : MonoBehaviour
         return resources;
     }
 
+    public Resources GeneratedPerClickResources()
+    {
+        Resources resources = new Resources();
+        int length = ImprovementsAvailable.Count;
+        for (int i = 0; i < length; ++i)
+        {
+            if (ImprovementsAvailable[i].Data.IsGeneratePerClick)
+                resources += ImprovementsAvailable[i].GenerateResources;
+        }
+
+        return resources;
+    }
+
     // When a perk reaches level 1,
     // it checks if the next perk has to be unlocked
     public void CheckUnblockImprovement()
@@ -88,6 +101,9 @@ public class ImprovementsManager : MonoBehaviour
             ImprovementsBlocked.RemoveAt(0);
         }
     }
+
+    
+    // Testing
     private void Start()
     {
         ImprovementsAvailable.Add(ImprovementsBlocked[0]);

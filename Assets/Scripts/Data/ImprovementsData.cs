@@ -18,9 +18,15 @@ public class ImprovementsData : ScriptableObject
 
     [ReadOnly]
     public Sprite Sprite;
-    
     [BoxGroup("Resources", false)]
+    public bool IsGeneratePerClick = false;
+    [BoxGroup("Resources", false), HideIf("IsGeneratePerClick")]
     public Resources GeneratedResources;
+    [BoxGroup("Resources", false), ShowIf("IsGeneratePerClick")]
+    public Resources GeneratedResourcesPerClick;
+    [BoxGroup("Resources", false), ShowIf("IsGeneratePerClick")]
+    [Range(0f, 1f)]
+    public float IncreasePerClickByLevel = 0.1f; //Percentage
     [BoxGroup("Resources", false)]
     [TextArea(1, 2)]
     public string InfoPerk = "";

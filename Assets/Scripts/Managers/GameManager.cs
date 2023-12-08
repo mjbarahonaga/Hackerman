@@ -13,7 +13,9 @@ public class GameManager : MonoBehaviour
 
     [Range(0f, 1f)]
     public float FractionOfSeconds = 0.1f; // 1f / 10f - 10 times per second
-    private Resources _fractionGeneratedResources = new Resources(0,0);
+    private Resources _fractionGeneratedResources = new Resources(0, 0);
+    [SerializeField]
+    private Resources _generatedPerClickResources = new Resources(1,0);
 
     private CoroutineHandle _updateCoroutine;
     private Resources _playerResources = new Resources();
@@ -97,11 +99,18 @@ public class GameManager : MonoBehaviour
         RefImprovementsManager.IncreasedImprovement(perk, PlayerResources);
     }
 
+    public void UpdateResourcesPerClick()
+    {
+        _generatedPerClickResources = RefImprovementsManager.GeneratedPerClickResources();
+    }
+
     public void UpdateResources()
     {
         GeneratedResources = RefImprovementsManager.GeneratedResources();
         _fractionGeneratedResources = GeneratedResources * FractionOfSeconds;
     }
+
+    public void ClickToHacker() => PlayerResources += _generatedPerClickResources;
 
     public void ReduceResources(Resources resources) => PlayerResources -= resources;
 

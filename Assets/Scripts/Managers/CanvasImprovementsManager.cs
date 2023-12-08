@@ -26,8 +26,8 @@ public class CanvasImprovementsManager : MonoBehaviour
 
     public void UpdateCurrentResources(Resources value)
     {
-        CodeLines.text = $"{value.CodeLines:F1}";
-        Bitcoin.text = $"{value.Bitcoin:F1}";
+        CodeLines.text = $"{(int)value.CodeLines}";
+        Bitcoin.text = $"{(int)value.Bitcoin}";
     }
 
     public void UpdateGenerateResources(Resources value)

@@ -41,7 +41,8 @@ public class ImprovementController : ScriptableObject
 
     private void OnValidate()
     {
-        Init();
+        if(Data != null)
+            Init();
     }
 
     public void Init()
@@ -73,7 +74,7 @@ public class ImprovementController : ScriptableObject
     {
         GameManager.Instance.ReduceResources(Cost);
         ++ImprovementLevel;
-        GenerateResources = Data.GeneratedResources * ImprovementLevel;
+        //GenerateResources = Data.GeneratedResources * ImprovementLevel;
         Cost.CodeLines += (int)(Cost.CodeLines * Data.IncreaseByLevel);
         Cost.Bitcoin += (int)(Cost.Bitcoin * Data.IncreaseByLevel);
 
@@ -85,7 +86,16 @@ public class ImprovementController : ScriptableObject
         // Called everytime
         else Data.SpecialEffect?.Invoke();
 
-        GameManager.Instance.UpdateResources();
+        if (Data.IsGeneratePerClick)
+        {
+            GenerateResources = Data.GeneratedResourcesPerClick * ImprovementLevel;
+            GameManager.Instance.UpdateResourcesPerClick();
+        }
+        else
+        {
+            GenerateResources = Data.GeneratedResources * ImprovementLevel;
+            GameManager.Instance.UpdateResources();
+        }
         OnUpdateInfo?.Invoke(this);
         //TODO : Call to update info
         //TODO : Update perks

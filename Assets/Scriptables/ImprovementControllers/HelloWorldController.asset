@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d4d0d15d317d5d488503c16d4cf81a0, type: 3}
-  m_Name: TestController 1
+  m_Name: HelloWorldController
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 954ff2de1374d464c9ad531e08d94637, type: 2}
+  Data: {fileID: 11400000, guid: e0c493db29914b449bd472adf9656d1c, type: 2}
   ImprovementLevel: 0
   Cost:
-    CodeLines: 100
-    Bitcoin: 100
+    CodeLines: 15
+    Bitcoin: 0
   GenerateResources:
     CodeLines: 0
     Bitcoin: 0
