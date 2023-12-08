@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ImprovementsManager : MonoBehaviour
 {
-    public static Action<ImprovementController> OnImprovementAvailable;
+    public static Action<ImprovementController, bool> OnImprovementAvailable;
     public List<ImprovementController> ImprovementsBlocked;
     public List<ImprovementController> ImprovementsAvailable;
     public List<ImprovementController> ImprovementsLockedInfo;
@@ -17,6 +17,16 @@ public class ImprovementsManager : MonoBehaviour
         {
             AvailabilityImprovement(ImprovementsAvailable[i], resources);
         }
+    }
+
+    public void AvailabilityImprovement(ImprovementController improvement, 
+    Resources resources)
+    {
+
+            // TODO : Change state on canvas
+            // It has to be heared by CanvasManager
+        OnImprovementAvailable?.Invoke(improvement, improvement.IsAvailable(resources));
+        
     }
 
     public void CheckUnlockInfoImprovements(Resources resources)
@@ -38,20 +48,13 @@ public class ImprovementsManager : MonoBehaviour
         }
     }
 
-    public void AvailabilityImprovement(ImprovementController improvement, 
+
+
+    public void IncreasedImprovement(ImprovementController improvement, 
         Resources resources)
     {
-        if (improvement.IsAvailable(resources))
-        {
-            // TODO : Change state on canvas
-            // It has to be heared by CanvasManager
-            OnImprovementAvailable?.Invoke(improvement);
-        }
-    }
-
-    public void IncreasedImprovement(ImprovementController improvement)
-    {
-        improvement.IncreasedLevel();
+        if(improvement.IsAvailable(resources))
+            improvement.IncreasedLevel();
     }
 
     public Resources GeneratedResources()

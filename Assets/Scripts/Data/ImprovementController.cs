@@ -9,17 +9,17 @@ public class ImprovementController : MonoBehaviour
 {
     public static Action OnCheckUnblockNextPerk;
     public static Action<ImprovementController> OnCheckUnlockInfoPerk;
+    public static Action<ImprovementController> OnUpdateInfo;
 
     [InlineEditor(InlineEditorModes.FullEditor)]
     public ImprovementsData Data;
-    public int ImprovementLevel = 0;
-    public Resources Cost;
-    public Resources GenerateResources;
-
-    [BoxGroup("SpecialEffect", false)]
-    public UnityEvent SpecialEffect;
-    [BoxGroup("SpecialEffect", false)]
-    public bool JustInLvl1 = false;
+    
+    [BoxGroup("Current Info Perk")]
+    [ReadOnly] public int ImprovementLevel = 0;
+    [BoxGroup("Current Info Perk")]
+    [ReadOnly] public Resources Cost;
+    [BoxGroup("Current Info Perk")]
+    [ReadOnly] public Resources GenerateResources;
 
     [SerializeField]
     private bool _isUnlocked = false;
@@ -46,8 +46,8 @@ public class ImprovementController : MonoBehaviour
     public bool IsAvailable(Resources amount)
     {
         return
-            amount.Bitcoin >= Data.PriceValue.Bitcoin   &&
-            amount.CodeLines >= Data.PriceValue.CodeLines;
+            amount.Bitcoin >= Cost.Bitcoin   &&
+            amount.CodeLines >= Cost.CodeLines;
     }
 
     // Is info blocked?
@@ -58,6 +58,7 @@ public class ImprovementController : MonoBehaviour
 
         return IsUnlocked = EnoughBitcoin && EnoughCodeLines;
     }
+
 
     public void IncreasedLevel()
     {
@@ -70,10 +71,11 @@ public class ImprovementController : MonoBehaviour
         if (ImprovementLevel == 1) OnCheckUnblockNextPerk?.Invoke();
 
         // Just called at lvl 1
-        if (JustInLvl1) SpecialEffect?.Invoke();
+        if (Data.JustInLvl1) Data.SpecialEffect?.Invoke();
         // Called everytime
-        else SpecialEffect?.Invoke();
+        else Data.SpecialEffect?.Invoke();
 
+        OnUpdateInfo?.Invoke(this);
         //TODO : Call to update info
         //TODO : Update perks
     }

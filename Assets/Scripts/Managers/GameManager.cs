@@ -70,6 +70,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void CheckToBuy(ImprovementController perk)
+    {
+        RefImprovementsManager.IncreasedImprovement(perk, PlayerResources);
+    }
+
     public void UpdateResources()
     {
         GeneratedResources = RefImprovementsManager.GeneratedResources();
