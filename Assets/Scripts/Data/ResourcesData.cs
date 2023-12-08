@@ -3,8 +3,8 @@ using System;
 [Serializable]
 public class Resources
 {
-    public int CodeLines;
-    public int Bitcoin;
+    public float CodeLines;
+    public float Bitcoin;
 
     public Resources()
     {
@@ -20,27 +20,31 @@ public class Resources
 
     public static Resources operator +(Resources res1, Resources res2) 
     {
-        res1.CodeLines += res2.CodeLines;
-        res1.Bitcoin += res2.Bitcoin;
-        return res1;
+        Resources tmp = new Resources();
+        tmp.CodeLines = res1.CodeLines + res2.CodeLines;
+        tmp.Bitcoin = res1.Bitcoin + res2.Bitcoin;
+        return tmp;
     }
     public static Resources operator -(Resources res1, Resources res2)
     {
-        res1.CodeLines -= res2.CodeLines;
-        res1.Bitcoin -= res2.Bitcoin;
-        return res1;
+        Resources tmp = new Resources();
+        tmp.CodeLines = res1.CodeLines - res2.CodeLines;
+        tmp.Bitcoin = res1.Bitcoin - res2.Bitcoin;
+        return tmp;
     }
     public static Resources operator *(Resources res, int value)
     {
-        res.CodeLines *= value;
-        res.Bitcoin *= value;
-        return res;
+        Resources tmp = new Resources();
+        tmp.CodeLines = res.CodeLines * value;
+        tmp.Bitcoin = res.Bitcoin * value;
+        return tmp;
     }
     public static Resources operator *(Resources res, float value)
     {
-        res.CodeLines = (int)(res.CodeLines * value); 
-        res.Bitcoin = (int)(res.Bitcoin * value);
-        return res;
+        Resources tmp = new Resources();
+        tmp.CodeLines = res.CodeLines * value;
+        tmp.Bitcoin = res.Bitcoin * value;
+        return tmp;
     }
 
 }

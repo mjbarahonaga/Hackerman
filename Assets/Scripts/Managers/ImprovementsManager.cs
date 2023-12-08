@@ -6,9 +6,10 @@ using UnityEngine;
 public class ImprovementsManager : MonoBehaviour
 {
     public static Action<ImprovementController, bool> OnImprovementAvailable;
+    public static Action<ImprovementController> OnAddCanvas;
     public List<ImprovementController> ImprovementsBlocked;
     public List<ImprovementController> ImprovementsAvailable;
-    public List<ImprovementController> ImprovementsLockedInfo;
+    //public List<ImprovementController> ImprovementsLockedInfo;
 
     public void CheckChangeStateImprovements(Resources resources)
     {
@@ -23,30 +24,30 @@ public class ImprovementsManager : MonoBehaviour
     Resources resources)
     {
 
-            // TODO : Change state on canvas
-            // It has to be heared by CanvasManager
+
+        // it is heard by CanvasController
         OnImprovementAvailable?.Invoke(improvement, improvement.IsAvailable(resources));
         
     }
 
-    public void CheckUnlockInfoImprovements(Resources resources)
-    {
-        int length = ImprovementsLockedInfo.Count;
-        ImprovementController tmp = null;
-        for (int i = 0; i < length; ++i)
-        {
-            tmp = ImprovementsLockedInfo[i];
-            if (tmp.IsUnlocked)
-            {
-                if (tmp.CheckUnlockInfo(resources))
-                {
-                    ImprovementsLockedInfo.RemoveAt(i);
-                    --i;
-                    --length;
-                }
-            }
-        }
-    }
+    //public void CheckUnlockInfoImprovements(Resources resources)
+    //{
+    //    int length = ImprovementsLockedInfo.Count;
+    //    ImprovementController tmp = null;
+    //    for (int i = 0; i < length; ++i)
+    //    {
+    //        tmp = ImprovementsLockedInfo[i];
+    //        if (tmp.IsUnlocked)
+    //        {
+    //            if (tmp.CheckUnlockInfo(resources))
+    //            {
+    //                ImprovementsLockedInfo.RemoveAt(i);
+    //                --i;
+    //                --length;
+    //            }
+    //        }
+    //    }
+    //}
 
 
 
@@ -59,11 +60,12 @@ public class ImprovementsManager : MonoBehaviour
 
     public Resources GeneratedResources()
     {
-        Resources resources = null;
+        Resources resources = new Resources();
         int length = ImprovementsAvailable.Count;
         for (int i = 0; i < length; ++i)
         {
-            resources += ImprovementsAvailable[i].GenerateResources;
+            if(ImprovementsAvailable[i].ImprovementLevel > 0)
+                resources += ImprovementsAvailable[i].GenerateResources;
         }
 
         return resources;
@@ -80,8 +82,25 @@ public class ImprovementsManager : MonoBehaviour
             // Move from blocked to available list, if it's empty, return
             if (ImprovementsBlocked.Count == 0) return;
             ImprovementsAvailable.Add(ImprovementsBlocked[0]);
+            OnAddCanvas?.Invoke(ImprovementsBlocked[0]);
             // Maybe to add to CanvasManager
-            ImprovementsLockedInfo.Add(ImprovementsBlocked[0]);
+            //ImprovementsLockedInfo.Add(ImprovementsBlocked[0]);
+            ImprovementsBlocked.RemoveAt(0);
+        }
+    }
+    private void Start()
+    {
+        ImprovementsAvailable.Add(ImprovementsBlocked[0]);
+        OnAddCanvas?.Invoke(ImprovementsBlocked[0]);
+        ImprovementsBlocked.RemoveAt(0);
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (ImprovementsBlocked.Count == 0) return;
+            ImprovementsAvailable.Add(ImprovementsBlocked[0]);
+            OnAddCanvas?.Invoke(ImprovementsBlocked[0]);
             ImprovementsBlocked.RemoveAt(0);
         }
     }

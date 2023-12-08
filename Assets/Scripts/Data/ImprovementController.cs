@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ImprovementController : MonoBehaviour
+[CreateAssetMenu(fileName = "ImprovementController", menuName = "Hackerman/Create Scriptable Improvement Controller")]
+[Serializable]
+public class ImprovementController : ScriptableObject
 {
     public static Action OnCheckUnblockNextPerk;
     public static Action<ImprovementController> OnCheckUnlockInfoPerk;
@@ -36,9 +38,16 @@ public class ImprovementController : MonoBehaviour
             }
         }
     }
+
+    private void OnValidate()
+    {
+        Init();
+    }
+
     public void Init()
     {
-        Cost = Data.PriceValue;
+        Cost.CodeLines = Data.PriceValue.CodeLines;
+        Cost.Bitcoin = Data.PriceValue.Bitcoin;
         ImprovementLevel = 0;
     }
 
@@ -65,7 +74,8 @@ public class ImprovementController : MonoBehaviour
         GameManager.Instance.ReduceResources(Cost);
         ++ImprovementLevel;
         GenerateResources = Data.GeneratedResources * ImprovementLevel;
-        Cost += Cost * Data.IncreaseByLevel;
+        Cost.CodeLines += (int)(Cost.CodeLines * Data.IncreaseByLevel);
+        Cost.Bitcoin += (int)(Cost.Bitcoin * Data.IncreaseByLevel);
 
 
         if (ImprovementLevel == 1) OnCheckUnblockNextPerk?.Invoke();
@@ -75,6 +85,7 @@ public class ImprovementController : MonoBehaviour
         // Called everytime
         else Data.SpecialEffect?.Invoke();
 
+        GameManager.Instance.UpdateResources();
         OnUpdateInfo?.Invoke(this);
         //TODO : Call to update info
         //TODO : Update perks

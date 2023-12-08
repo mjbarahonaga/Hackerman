@@ -16,6 +16,9 @@ public class ImprovementsData : ScriptableObject
     [OnInspectorGUI("DrawLogo", append: true)]
     public Texture2D Logo;
 
+    [ReadOnly]
+    public Sprite Sprite;
+    
     [BoxGroup("Resources", false)]
     public Resources GeneratedResources;
     [BoxGroup("Resources", false)]
@@ -36,6 +39,15 @@ public class ImprovementsData : ScriptableObject
     public UnityEvent SpecialEffect;
     [BoxGroup("SpecialEffect", false)]
     public bool JustInLvl1 = false;
+
+    private void OnValidate()
+    {
+        if(Logo != null)
+        {
+            Sprite = Sprite.Create(Logo, new Rect(0.0f, 0.0f, Logo.width, Logo.height), 
+                new Vector2());
+        }
+    }
 
     private void DrawLogo()
     {

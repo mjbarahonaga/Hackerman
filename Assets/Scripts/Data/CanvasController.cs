@@ -22,6 +22,12 @@ public class CanvasController : MonoBehaviour
 
     public ImprovementController CurrentPerk = null;
 
+    //Test
+    private void Start()
+    {
+        InitCanvas(CurrentPerk);
+    }
+
     public void InitCanvas(ImprovementController perk)
     {
         CurrentPerk = perk;
@@ -38,6 +44,15 @@ public class CanvasController : MonoBehaviour
             BitcoinGameObject.gameObject.SetActive(true);
             PriceBitcoin.text = Value.Bitcoin.ToString();
         }
+
+        var sprite = CurrentPerk.Data.Sprite;
+        if (sprite == null)
+        {
+            sprite = Sprite.Create(CurrentPerk.Data.Logo, 
+                new Rect(0.0f, 0.0f, CurrentPerk.Data.Logo.width, CurrentPerk.Data.Logo.height),
+                new Vector2());
+        }
+        LogoPerk.sprite = sprite;
 
         Info.text = perk.Data.InfoPerk;
         ButtonToBuy.onClick.AddListener(() => GameManager.Instance.CheckToBuy(CurrentPerk));

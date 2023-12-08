@@ -9,22 +9,22 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public ImprovementsManager RefImprovementsManager;
-    //public CanvasManager RefCanvasManager;
+    public CanvasImprovementsManager RefCanvasManager;
 
     [Range(0f, 1f)]
     public float FractionOfSeconds = 0.1f; // 1f / 10f - 10 times per second
     private Resources _fractionGeneratedResources = new Resources(0,0);
 
     private CoroutineHandle _updateCoroutine;
-    private Resources _playerResources;
-    private Resources _generatedResources;
+    private Resources _playerResources = new Resources();
+    private Resources _generatedResources = new Resources();
     public Resources PlayerResources
     {
         get => _playerResources;
         private set
         {
             _playerResources = value;
-            // TODO : Update Canvas Showing resources
+            RefCanvasManager.UpdateCurrentResources(_playerResources);
         }
     }
 
@@ -34,13 +34,14 @@ public class GameManager : MonoBehaviour
         private set
         {
             _generatedResources = value;
-            // TODO : Update Canvas Showing resources generated
+            RefCanvasManager.UpdateGenerateResources(_generatedResources);
+
         }
     }
     
     private void Awake()
     {
-        PlayerResources = new Resources(0, 0);
+        //PlayerResources = new Resources(0, 0);
         _fractionGeneratedResources = new Resources(0, 0);
         if (Instance != null && Instance != this)
         {
@@ -49,6 +50,27 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
 
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            PlayerResources.Bitcoin += 100;
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            GeneratedResources.Bitcoin += 10;
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            PlayerResources.CodeLines += 100;
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            GeneratedResources.CodeLines += 10;
+        }
     }
 
     private void OnEnable()
@@ -64,7 +86,7 @@ public class GameManager : MonoBehaviour
 
             //it checks if it's available to buy perks
             RefImprovementsManager.CheckChangeStateImprovements(PlayerResources);
-            RefImprovementsManager.CheckUnlockInfoImprovements(PlayerResources);
+            //RefImprovementsManager.CheckUnlockInfoImprovements(PlayerResources);
 
             yield return Timing.WaitForSeconds(FractionOfSeconds);
         }
