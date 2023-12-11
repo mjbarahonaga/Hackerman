@@ -1,10 +1,12 @@
 using MEC;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static Action<int, Vector3> OnClick;
     // Singleton
     public static GameManager Instance { get; private set; }
 
@@ -117,7 +119,20 @@ public class GameManager : MonoBehaviour
         _fractionGeneratedResources = GeneratedResources * FractionOfSeconds;
     }
 
-    public void ClickToHacker() => PlayerResources += _generatedPerClickResources;
+    public void ClickToHacker()
+    {
+        PlayerResources += _generatedPerClickResources;
+        // Call feedback
+        //Vector2 screenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+
+        //var screenPosition = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //if(Physics.Raycast(screenPosition, out var hit))
+            //OnClick?.Invoke((int)_generatedPerClickResources.CodeLines, hit.point);
+
+        OnClick?.Invoke((int)_generatedPerClickResources.CodeLines, Input.mousePosition);
+
+
+    }
 
     public void ReduceResources(Resources resources) => PlayerResources -= resources;
 
