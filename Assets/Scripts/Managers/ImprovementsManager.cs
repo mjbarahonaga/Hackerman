@@ -104,8 +104,10 @@ public class ImprovementsManager : MonoBehaviour
 
     
     // Testing
-    private void Start()
+    public IEnumerator Start()
     {
+        // Waiting to everything is initialized
+        yield return new WaitForEndOfFrame();
         ImprovementsAvailable.Add(ImprovementsBlocked[0]);
         OnAddCanvas?.Invoke(ImprovementsBlocked[0]);
         ImprovementsBlocked.RemoveAt(0);

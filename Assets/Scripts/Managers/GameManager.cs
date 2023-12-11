@@ -80,6 +80,13 @@ public class GameManager : MonoBehaviour
         _updateCoroutine = Timing.RunCoroutine(MyUpdate());
     }
 
+    private void Start()
+    {
+        //Load game
+        // or default init
+        //RefImprovementsManager.DefaultInit();
+    }
+
     public IEnumerator<float> MyUpdate()
     {
         while (true)
