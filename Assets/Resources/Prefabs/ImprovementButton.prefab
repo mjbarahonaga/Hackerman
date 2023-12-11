@@ -503,7 +503,7 @@ MonoBehaviour:
   BitcoinGameObject: {fileID: 5002858885694228484}
   AlphaCanvas: {fileID: 5066504390354028682}
   ButtonToBuy: {fileID: 4970446730855952418}
-  CurrentPerk: {fileID: 0}
+  CurrentPerk: {fileID: 11400000, guid: 54e0cecc6986cb24a983c2573509bf7c, type: 2}
 --- !u!1 &5001710635800143996
 GameObject:
   m_ObjectHideFlags: 0
