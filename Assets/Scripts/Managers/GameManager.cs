@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     public ImprovementsManager RefImprovementsManager;
     public CanvasImprovementsManager RefCanvasManager;
+    public GameObject RefCanvasMenu;
+    public Button RefHackerInteraction;
 
     [Range(0f, 1f)]
     public float FractionOfSeconds = 0.1f; // 1f / 10f - 10 times per second
@@ -135,6 +138,24 @@ public class GameManager : MonoBehaviour
     }
 
     public void ReduceResources(Resources resources) => PlayerResources -= resources;
+
+    public void MenuOptions()
+    {
+        if (RefCanvasMenu.activeSelf)
+        {
+            //Deactivate
+            Resume();
+            RefCanvasMenu.SetActive(false);
+            RefHackerInteraction.enabled = true;
+        }
+        else
+        {
+            //Activate
+            Pause();
+            RefCanvasMenu.SetActive(true);
+            RefHackerInteraction.enabled = false;
+        }
+    }
 
     public void Pause() => Timing.PauseCoroutines(_updateCoroutine);
 
