@@ -9,7 +9,6 @@ public class ClickFeedback : MonoBehaviour
 {
     public TextMeshProUGUI ValueClick;
     public CanvasGroup CanvasGroup;
-
     public ClickPool PoolReference;
 
     public float LifeTime = 2f;

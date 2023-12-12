@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     public GameObject RefCanvasMenu;
     public Button RefHackerInteraction;
 
+    public AudioSource AudioClickController;
+    public List<AudioClip> ClickClips = new List<AudioClip>();
+
     [Range(0f, 1f)]
     public float FractionOfSeconds = 0.1f; // 1f / 10f - 10 times per second
     private Resources _fractionGeneratedResources = new Resources(0, 0);
@@ -126,31 +129,31 @@ public class GameManager : MonoBehaviour
     {
         PlayerResources += _generatedPerClickResources;
         // Call feedback
-        //Vector2 screenPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-
-        //var screenPosition = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //if(Physics.Raycast(screenPosition, out var hit))
-            //OnClick?.Invoke((int)_generatedPerClickResources.CodeLines, hit.point);
-
+        ActiveSoundClick();
         OnClick?.Invoke((int)_generatedPerClickResources.CodeLines, Input.mousePosition);
+    }
 
-
+    public void ActiveSoundClick()
+    {
+        int index = UnityEngine.Random.Range(0, ClickClips.Capacity);
+        AudioClickController.clip = ClickClips[index];
+        AudioClickController.Play();
     }
 
     public void ReduceResources(Resources resources) => PlayerResources -= resources;
 
     public void MenuOptions()
     {
-        if (RefCanvasMenu.activeSelf)
+        if (RefCanvasMenu.activeSelf) //Deactivate
         {
-            //Deactivate
+            
             Resume();
             RefCanvasMenu.SetActive(false);
             RefHackerInteraction.enabled = true;
         }
-        else
+        else //Activate
         {
-            //Activate
+            
             Pause();
             RefCanvasMenu.SetActive(true);
             RefHackerInteraction.enabled = false;
