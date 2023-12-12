@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class ImprovementsManager : MonoBehaviour
@@ -102,16 +103,15 @@ public class ImprovementsManager : MonoBehaviour
         }
     }
 
-    
-    // Testing
-    public IEnumerator Start()
+    public Task DefaultInit()
     {
         // Waiting to everything is initialized
-        yield return new WaitForEndOfFrame();
         ImprovementsAvailable.Add(ImprovementsBlocked[0]);
         OnAddCanvas?.Invoke(ImprovementsBlocked[0]);
         ImprovementsBlocked.RemoveAt(0);
+        return Task.CompletedTask;
     }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))

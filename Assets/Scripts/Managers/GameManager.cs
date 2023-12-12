@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     // Singleton
     public static GameManager Instance { get; private set; }
 
+    public GameObject CanvasMenu;
+    public GameObject CanvasGame;
+
     public ImprovementsManager RefImprovementsManager;
     public CanvasImprovementsManager RefCanvasManager;
     public GameObject RefCanvasMenu;
@@ -88,11 +91,14 @@ public class GameManager : MonoBehaviour
         _updateCoroutine = Timing.RunCoroutine(MyUpdate());
     }
 
-    private void Start()
+    public void StartGame()
     {
+        CanvasMenu.SetActive(false);
         //Load game
         // or default init
-        //RefImprovementsManager.DefaultInit();
+        var task = RefImprovementsManager.DefaultInit();
+        task.Wait();
+        CanvasGame.SetActive(true);
     }
 
     public IEnumerator<float> MyUpdate()
@@ -163,4 +169,6 @@ public class GameManager : MonoBehaviour
     public void Pause() => Timing.PauseCoroutines(_updateCoroutine);
 
     public void Resume() => Timing.ResumeCoroutines(_updateCoroutine);
+
+    public void ExitGame() => Application.Quit();
 }
