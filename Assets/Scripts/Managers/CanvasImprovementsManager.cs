@@ -43,4 +43,16 @@ public class CanvasImprovementsManager : MonoBehaviour
         controller.CurrentPerk = perk;
         Instantiate(CanvasRef, ListPerks.transform);
     }
+
+    public void UpdatePerks(List<ImprovementController> perks)
+    {
+        var controller = CanvasRef.GetComponent<CanvasController>();
+        if (controller == null) return;
+        int length = perks.Count;
+        for (int i = 0; i < length; ++i)
+        {
+            controller.CurrentPerk = perks[i];
+            Instantiate(CanvasRef, ListPerks.transform);
+        }
+    }
 }

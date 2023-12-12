@@ -47,6 +47,8 @@ public class ImprovementController : ScriptableObject
 
     public void Init()
     {
+        Cost = new Resources();
+        GenerateResources = new Resources();
         Cost.CodeLines = Data.PriceValue.CodeLines;
         Cost.Bitcoin = Data.PriceValue.Bitcoin;
         ImprovementLevel = 0;

@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[Serializable]
 public class ImprovementsManager : MonoBehaviour
 {
+    [SerializeReference]
     public static Action<ImprovementController, bool> OnImprovementAvailable;
+    [SerializeReference]
     public static Action<ImprovementController> OnAddCanvas;
     public List<ImprovementController> ImprovementsBlocked;
     public List<ImprovementController> ImprovementsAvailable;

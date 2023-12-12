@@ -2,6 +2,7 @@ using MEC;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,9 @@ public class GameManager : MonoBehaviour
     public static Action<int, Vector3> OnClick;
     // Singleton
     public static GameManager Instance { get; private set; }
+
+    public float AutoSaveInSec = 60f;
+    private float _currentSecs = 0f;
 
     public GameObject CanvasMenu;
     public GameObject CanvasGame;
@@ -21,7 +25,6 @@ public class GameManager : MonoBehaviour
 
     public AudioSource AudioClickController;
     public List<AudioClip> ClickClips = new List<AudioClip>();
-
     [Range(0f, 1f)]
     public float FractionOfSeconds = 0.1f; // 1f / 10f - 10 times per second
     private Resources _fractionGeneratedResources = new Resources(0, 0);
@@ -84,6 +87,10 @@ public class GameManager : MonoBehaviour
         {
             GeneratedResources.CodeLines += 10;
         }
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            SaveGame();
+        }
     }
 
     private void OnEnable()
@@ -94,10 +101,13 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         CanvasMenu.SetActive(false);
-        //Load game
-        // or default init
-        var task = RefImprovementsManager.DefaultInit();
-        task.Wait();
+        var data = LoadGame();
+        if(data == false)
+        {
+            var task = RefImprovementsManager.DefaultInit();
+            task.Wait();
+        }
+        
         CanvasGame.SetActive(true);
     }
 
@@ -106,11 +116,15 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             PlayerResources += _fractionGeneratedResources;
-
             //it checks if it's available to buy perks
             RefImprovementsManager.CheckChangeStateImprovements(PlayerResources);
             //RefImprovementsManager.CheckUnlockInfoImprovements(PlayerResources);
-
+            if(_currentSecs >= AutoSaveInSec)
+            {
+                SaveGame();
+                _currentSecs = 0f;
+            }
+            _currentSecs += FractionOfSeconds;
             yield return Timing.WaitForSeconds(FractionOfSeconds);
         }
     }
@@ -164,6 +178,44 @@ public class GameManager : MonoBehaviour
             RefCanvasMenu.SetActive(true);
             RefHackerInteraction.enabled = false;
         }
+    }
+
+    public Task SaveGame()
+    {
+        SaveData data = new SaveData();
+        data.ImprovementsAvailable = RefImprovementsManager.ImprovementsAvailable;
+        data.ImprovementsBlocked = RefImprovementsManager.ImprovementsBlocked;
+        data.PlayerResources = PlayerResources;
+
+        SaveManager.SaveGameState(data);
+#if UNITY_EDITOR
+        Debug.Log("GUARDADO");
+#endif
+        return Task.CompletedTask;
+    }
+
+    public bool LoadGame()
+    {
+        SaveData data = new SaveData();
+        data = SaveManager.LoadGameState();
+        if(data == null) return false;
+        SetData(data).Wait();
+
+        return true;
+    }
+
+    public Task SetData(SaveData data)
+    {
+        RefImprovementsManager.ImprovementsAvailable.Clear();
+        RefImprovementsManager.ImprovementsBlocked.Clear();
+
+        RefImprovementsManager.ImprovementsAvailable = data.ImprovementsAvailable;
+        RefImprovementsManager.ImprovementsBlocked = data.ImprovementsBlocked;
+
+        PlayerResources = data.PlayerResources;
+
+        RefCanvasManager.UpdatePerks(data.ImprovementsAvailable);
+        return Task.CompletedTask;
     }
 
     public void Pause() => Timing.PauseCoroutines(_updateCoroutine);
