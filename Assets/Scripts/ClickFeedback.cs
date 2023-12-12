@@ -30,7 +30,7 @@ public class ClickFeedback : MonoBehaviour
         float currentTime = 0f;
         float valueX = UnityEngine.Random.Range(-300f, 300f);
         float valueY = UnityEngine.Random.Range(-100f, 100f);
-        float speedY = UnityEngine.Random.Range(1f, 3f);
+        float speedY = UnityEngine.Random.Range(0.5f, 1f);
 
         Vector3 addPos = new Vector3(valueX, valueY, 0f);
         Vector3 upSpeed = new Vector3(0f, speedY, 0f);
