@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520b92988ad34b34ebef4d471c98f725, type: 3}
   m_Name: Coffee
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Coffee
   Logo: {fileID: 2800000, guid: bf763e8a7a52e174ab30de6b82955299, type: 3}
   Sprite: {fileID: 0}
   IsGeneratePerClick: 1

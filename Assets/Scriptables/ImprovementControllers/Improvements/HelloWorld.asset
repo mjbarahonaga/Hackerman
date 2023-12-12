@@ -15,10 +15,15 @@ MonoBehaviour:
   Name: Hello World
   Logo: {fileID: 2800000, guid: a560cf93dbf26b640a3d3eda3f63cca0, type: 3}
   Sprite: {fileID: 0}
+  IsGeneratePerClick: 0
   GeneratedResources:
     CodeLines: 0.1
     Bitcoin: 0
-  InfoPerk: 
+  GeneratedResourcesPerClick:
+    CodeLines: 0
+    Bitcoin: 0
+  IncreasePerClickByLevel: 0.1
+  InfoPerk: 0.1 per level
   PriceValue:
     CodeLines: 15
     Bitcoin: 0

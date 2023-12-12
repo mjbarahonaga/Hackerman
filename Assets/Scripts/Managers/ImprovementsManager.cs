@@ -106,6 +106,11 @@ public class ImprovementsManager : MonoBehaviour
     public Task DefaultInit()
     {
         // Waiting to everything is initialized
+        int length = ImprovementsBlocked.Count;
+        for (int i = 0; i < length; ++i)
+        {
+            ImprovementsBlocked[i].Init();
+        }
         ImprovementsAvailable.Add(ImprovementsBlocked[0]);
         OnAddCanvas?.Invoke(ImprovementsBlocked[0]);
         ImprovementsBlocked.RemoveAt(0);
