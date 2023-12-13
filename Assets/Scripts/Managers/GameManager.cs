@@ -180,6 +180,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void CallSaveGame()
+    {
+        _currentSecs = 0f; // To avoid call it again while it is running
+        SaveGame();
+    }
     public Task SaveGame()
     {
         SaveData data = new SaveData();
@@ -187,6 +192,12 @@ public class GameManager : MonoBehaviour
         data.ImprovementsBlocked = RefImprovementsManager.ImprovementsBlocked;
         data.PlayerResources = PlayerResources;
 
+        int length = RefImprovementsManager.ImprovementsAvailable.Count;
+        for (int i = 0; i < length; ++i)
+        {
+            data.PerksLvl.Add(RefImprovementsManager.ImprovementsAvailable[i].ImprovementLevel);
+        }
+        
         SaveManager.SaveGameState(data);
 #if UNITY_EDITOR
         Debug.Log("GUARDADO");
@@ -198,7 +209,14 @@ public class GameManager : MonoBehaviour
     {
         SaveData data = new SaveData();
         data = SaveManager.LoadGameState();
-        if(data == null) return false;
+        if (data == null)
+        {
+#if UNITY_EDITOR
+            Debug.Log("NO CARGO DATOS");
+#endif
+            return false;
+        }
+
         SetData(data).Wait();
 
         return true;
@@ -213,11 +231,23 @@ public class GameManager : MonoBehaviour
         RefImprovementsManager.ImprovementsBlocked = data.ImprovementsBlocked;
 
         PlayerResources = data.PlayerResources;
+        int length = RefImprovementsManager.ImprovementsAvailable.Count;
+        for (int i = 0; i < length; ++i)
+        {
+            RefImprovementsManager.ImprovementsAvailable[i].SetLevelFromSavedData(data.PerksLvl[i]);
+        }
 
-        RefCanvasManager.UpdatePerks(data.ImprovementsAvailable);
+        UpdateResourcesPerClick();
+        UpdateResources();
+
+        RefCanvasManager.UpdatePerks(RefImprovementsManager.ImprovementsAvailable);
+#if UNITY_EDITOR
+        Debug.Log("CARGO DATOS!!!");
+#endif
         return Task.CompletedTask;
     }
 
+  
     public void Pause() => Timing.PauseCoroutines(_updateCoroutine);
 
     public void Resume() => Timing.ResumeCoroutines(_updateCoroutine);

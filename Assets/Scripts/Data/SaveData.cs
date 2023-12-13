@@ -5,8 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class SaveData 
 {
-    public List<ImprovementController> ImprovementsBlocked;
-    public List<ImprovementController> ImprovementsAvailable;
-
+    public List<ImprovementController> ImprovementsBlocked = new List<ImprovementController>();
+    public List<ImprovementController> ImprovementsAvailable = new List<ImprovementController>();
+    public List<int> PerksLvl = new List<int>();
     public Resources PlayerResources;
 }

@@ -102,4 +102,26 @@ public class ImprovementController : ScriptableObject
         //TODO : Call to update info
         //TODO : Update perks
     }
+
+    public void SetLevelFromSavedData(int lvlToReach)
+    {
+        ImprovementLevel = lvlToReach;
+        Cost.CodeLines = Data.PriceValue.CodeLines;
+        Cost.Bitcoin = Data.PriceValue.Bitcoin;
+
+        for (int i = 0; i < lvlToReach; ++i)
+        {
+            Cost.CodeLines += (int)(Cost.CodeLines * Data.IncreaseByLevel);
+            Cost.Bitcoin += (int)(Cost.Bitcoin * Data.IncreaseByLevel);
+        }
+
+        if (Data.IsGeneratePerClick)
+        {
+            GenerateResources = Data.GeneratedResourcesPerClick * ImprovementLevel;
+        }
+        else
+        {
+            GenerateResources = Data.GeneratedResources * ImprovementLevel;
+        }
+    }
 }

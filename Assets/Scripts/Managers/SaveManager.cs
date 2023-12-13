@@ -15,27 +15,21 @@ public static class SaveManager
 
     public static SaveData LoadGameState()
     {
-        if (File.Exists(Application.persistentDataPath + "/SaveData.save"))
-        {
-            try
-            {
-                if(File.Exists(Application.dataPath + "/SaveData.json"))
-                {
-                    string saveString = File.ReadAllText(Application.dataPath + "/SaveData.json");
-                    SaveData data = JsonUtility.FromJson<SaveData>(saveString);
-                    return data;
-                }
-                //BinaryFormatter binaryFormatter = new BinaryFormatter();
-                //FileStream file = File.Open(Application.persistentDataPath + "/SaveData.save", FileMode.Open);
-                //SaveData saveData =  JsonUtility.from < SaveData>(file)//= (SaveData)binaryFormatter.Deserialize(file);
-                //file.Close();
-                //return saveData;
-            }
-            catch
-            {
 
+        try
+        {
+            if(File.Exists(Application.dataPath + "/SaveData.json"))
+            {
+                string saveString = File.ReadAllText(Application.dataPath + "/SaveData.json");
+                SaveData data = JsonUtility.FromJson<SaveData>(saveString);
+                return data;
             }
         }
+        catch
+        {
+
+        }
+        
         return null;
     }
 }
