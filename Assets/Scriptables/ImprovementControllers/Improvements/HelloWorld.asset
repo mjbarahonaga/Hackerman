@@ -27,7 +27,7 @@ MonoBehaviour:
   PriceValue:
     CodeLines: 15
     Bitcoin: 0
-  IncreaseByLevel: 0.3
+  IncreaseByLevel: 0.1
   PercentageToUnlock: 0.1
   SpecialEffect:
     m_PersistentCalls:

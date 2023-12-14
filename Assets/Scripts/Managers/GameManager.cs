@@ -9,12 +9,14 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static Action<int, Vector3> OnClick;
+    public static Action<float> OnMatrixEffect;
+    public static Action<string> OnSaveGame;
     // Singleton
     public static GameManager Instance { get; private set; }
 
     public float AutoSaveInSec = 60f;
     private float _currentSecs = 0f;
-
+    public float VelocityMatrixEffect = 5;
     public GameObject CanvasMenu;
     public GameObject CanvasGame;
 
@@ -68,34 +70,23 @@ public class GameManager : MonoBehaviour
 
     }
 
+    // HACKS
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            PlayerResources.Bitcoin += 100;
-        }
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            GeneratedResources.Bitcoin += 10;
+            PlayerResources.Bitcoin += 10000;
         }
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            PlayerResources.CodeLines += 100;
+            PlayerResources.CodeLines += 10000;
         }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            GeneratedResources.CodeLines += 10;
-        }
+
         if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
-            SaveGame();
+            SaveGame("Save Game");
         }
-    }
-
-    private void OnEnable()
-    {
-        _updateCoroutine = Timing.RunCoroutine(MyUpdate());
     }
 
     public void StartGame()
@@ -107,7 +98,7 @@ public class GameManager : MonoBehaviour
             var task = RefImprovementsManager.DefaultInit();
             task.Wait();
         }
-        
+        _updateCoroutine = Timing.RunCoroutine(MyUpdate());
         CanvasGame.SetActive(true);
     }
 
@@ -121,7 +112,7 @@ public class GameManager : MonoBehaviour
             //RefImprovementsManager.CheckUnlockInfoImprovements(PlayerResources);
             if(_currentSecs >= AutoSaveInSec)
             {
-                SaveGame();
+                SaveGame("Auto Save Game");
                 _currentSecs = 0f;
             }
             _currentSecs += FractionOfSeconds;
@@ -151,6 +142,7 @@ public class GameManager : MonoBehaviour
         // Call feedback
         ActiveSoundClick();
         OnClick?.Invoke((int)_generatedPerClickResources.CodeLines, Input.mousePosition);
+        OnMatrixEffect?.Invoke(VelocityMatrixEffect);
     }
 
     public void ActiveSoundClick()
@@ -183,9 +175,9 @@ public class GameManager : MonoBehaviour
     public void CallSaveGame()
     {
         _currentSecs = 0f; // To avoid call it again while it is running
-        SaveGame();
+        SaveGame("Save Game");
     }
-    public Task SaveGame()
+    public Task SaveGame(string type)
     {
         SaveData data = new SaveData();
         data.ImprovementsAvailable = RefImprovementsManager.ImprovementsAvailable;
@@ -202,6 +194,7 @@ public class GameManager : MonoBehaviour
 #if UNITY_EDITOR
         Debug.Log("GUARDADO");
 #endif
+        OnSaveGame?.Invoke(type);
         return Task.CompletedTask;
     }
 
@@ -239,8 +232,10 @@ public class GameManager : MonoBehaviour
 
         UpdateResourcesPerClick();
         UpdateResources();
-
-        RefCanvasManager.UpdatePerks(RefImprovementsManager.ImprovementsAvailable);
+        if (RefImprovementsManager.ImprovementsAvailable.Count > 0)
+            RefCanvasManager.UpdatePerks(RefImprovementsManager.ImprovementsAvailable);
+        else
+            RefImprovementsManager.DefaultInit();
 #if UNITY_EDITOR
         Debug.Log("CARGO DATOS!!!");
 #endif

@@ -77,7 +77,7 @@ public class ImprovementsManager : MonoBehaviour
 
     public Resources GeneratedPerClickResources()
     {
-        Resources resources = new Resources();
+        Resources resources = new Resources(); // Default
         int length = ImprovementsAvailable.Count;
         for (int i = 0; i < length; ++i)
         {
@@ -85,7 +85,7 @@ public class ImprovementsManager : MonoBehaviour
                 resources += ImprovementsAvailable[i].GenerateResources;
         }
 
-        return resources;
+        return resources.CodeLines > 0 ? resources : new Resources(1,0); // new Resources(1,0) default
     }
 
     // When a perk reaches level 1,
